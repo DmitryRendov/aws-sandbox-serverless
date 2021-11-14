@@ -1,0 +1,6 @@
+# Hello World!
+
+hello:
+  handler: src/hello/handler.hello
+  name: ${self:service}-hello
+

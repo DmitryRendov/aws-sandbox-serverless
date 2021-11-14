@@ -1,0 +1,61 @@
+service: aws-sandbox-serverless
+
+useDotenv: true
+variablesResolutionMode: 20210326
+
+disabledDeprecations:
+  - OUTDATED_NODEJS
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: '20201221'
+  memorySize: ${self:custom.env.memorySize}
+  timeout: ${self:custom.env.timeout}
+  stage: ${opt:stage, 'production'}
+  region: ${opt:region, 'us-east-1'}
+  stackName: ${self:service}-${self:provider.stage}
+  apiName: ${self:service}-${self:provider.stage}
+  stackTags:
+    Name: ${self:provider.stackName}
+    environment: ${self:provider.stage}
+    role: serverless
+    repo: aws-sandbox-serverless
+    team: developers
+  #profile: ${opt:profile, 'production-dmitry_rendov'}
+  role: ${self:custom.env.sls_role}
+  deploymentBucket:
+    name: ${opt:bucket, 'sb-production-serverless-6e9141321b09'}
+    serverSideEncryption: AES256
+    tags:
+      env: ${self:provider.stage}
+  environment:
+    REGION: ${self:provider.region}
+    SERVICE_NAME: ${self:service}
+    AWS_PROFILE: ${opt:profile, 'production-dmitry_rendov'}
+
+custom:
+  apiVersion: ${opt:apiVersion, 'v1'}
+  env: ${file(./sls/env/${self:provider.stage}.yml)}
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  patterns:
+    - src/**
+  exclude:
+    - .git
+    - .gitignore
+    - node_modules
+    - README.md
+    - LICENSE
+    - serverless.yml
+    - package-lock.json
+    - sls/*
+    - sls/env/*
+
+resources:
+  - ${file(./sls/resources.yml)}
+
+functions:
+  - ${file(./sls/functions.yml)}
