@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block test %}
+{{ test.title }}
+{% endblock %}
+
+{% block body %}
+<div class="container px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">{{ test.title }}</h1>
+    <!-- jinja templating style -->
+    <div class="alert alert-info">
+        <p>{{ test.text }}</p>
+        <p><b>Date: {{ test.date | ctime }}</b></p>
+        <a href="/tests/{{ test.id }}/delete"class="btn btn-danger">Delete</a>
+        <a href="/tests/{{ test.id }}/update"class="btn btn-success">Edit</a>
+    </div>
+</div>
+{% endblock %}

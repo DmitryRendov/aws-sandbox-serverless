@@ -1,2 +1,19 @@
 ---
 Resources:
+  testsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.environment.TESTS_TABLE}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: date
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: date
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3

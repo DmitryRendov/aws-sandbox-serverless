@@ -1,6 +1,5 @@
+apiVersion: ${opt:apiVersion, 'v1'}
 sls_role: arn:aws:iam::${aws:accountId}:role/${self:provider.stage}-serverless
 lambda_logs_rotation: 30
 memorySize: 128
 timeout: 30
-
-

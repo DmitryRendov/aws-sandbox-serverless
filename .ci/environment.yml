@@ -1,0 +1,30 @@
+name: aws-sandbox-serverless
+channels:
+  - conda-forge
+
+dependencies:
+  # order: 1. git+python, 2. all other conda packages, 3. pip packages at the end
+  - git
+  - python
+  - beautysh
+  - black
+  - flake8
+  - flake8-black
+  - flask
+  - flask-sqlalchemy
+  - git-sizer
+  - gitpython
+  - make
+  - nodejs
+  - nomkl
+  - pylint
+  - pytest
+  - pytest-html
+  - pyyaml
+  - requests
+  - awscli
+  - boto3
+  - jq
+  - ripgrep
+  - shellcheck
+  - shyaml

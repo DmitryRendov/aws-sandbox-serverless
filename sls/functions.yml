@@ -1,6 +1,39 @@
-# Hello World!
-
 hello:
   handler: src/hello/handler.hello
   name: ${self:service}-hello
 
+app:
+  handler: wsgi_handler.handler
+  events:
+    - http: ANY /
+    - http: ANY /{proxy+}
+
+# getAbout:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'GET /about'
+
+# getTests:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'GET /tests'
+
+# getTestsDetails:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'GET /tests/{id}'
+
+# createTest:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'POST /create-test'
+
+# updateTest:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'POST /tests/{id}/update'
+
+# deleteTest:
+#   handler: wsgi.handler
+#   events:
+#     - http: 'DELETE /tests/{id}/delete'

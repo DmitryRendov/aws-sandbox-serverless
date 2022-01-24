@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Main page
+{% endblock %}
+
+{% block body %}
+<div class="container px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4" src="static/images/ark.jpg" alt="" width="800" height="450">
+    <h1 class="display-5 fw-bold">Main site page</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Аркадий Добкин: Кремниевая долина не конкурент EPAM?</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Yes</button>
+            <button type="button" class="btn btn-outline-secondary btn-lg px-4">No</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Update test
+{% endblock %}
+
+{% block body %}
+<div class="container px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Update test</h1>
+    <!-- Add page where to render form -->
+    <form method="post">
+        <input type="text" name="title" id="title" class="form-control" value="{{ test.title }}" placeholder="Input name"><br>
+        <textarea name="intro" id="text" class="form-control" placeholder="Input anonce">{{ test.intro }}</textarea><br>
+        <textarea name="text" id="text" class="form-control" placeholder="Input main text">{{ test.text }}</textarea><br>
+        <input type="submit" class="btn btn-success" value="Update">
+    </form>
+</div>
+{% endblock %}

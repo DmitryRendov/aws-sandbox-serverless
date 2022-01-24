@@ -1,0 +1,36 @@
+sls_role: ${self:provider.stage}-serverless
+
+apiVersion: ${opt:apiVersion, 'v1'}
+lambda_logs_rotation: 30
+memorySize: 128
+timeout: 30
+
+# serverless-offline:
+#   noPrependStageInUrl: true
+#   useDocker: true
+
+dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+  stages:
+    - dev
+  start:
+    port: 8000
+    inMemory: true
+    heapInitial: 500m
+    heapMax: 2g
+    migrate: true
+    seed: true
+    convertEmptyValues: true
+  seed:
+    tests:
+      sources:
+        - table: ${self:provider.environment.TESTS_TABLE}
+          sources: [src/web/seeds/fake_tests_table.json]
+  # Uncomment only if you already have a DynamoDB running locally
+  # noStart: true
+
+wsgi:
+  app: src/web/app.app
+  packRequirements: false
+pythonRequirements:
+  dockerizePip: non-linux
