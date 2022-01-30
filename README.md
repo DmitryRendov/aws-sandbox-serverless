@@ -1,4 +1,7 @@
 # aws-sandbox-serverless
+
+[![Test pipeline](https://github.com/DmitryRendov/aws-sandbox-serverless/actions/workflows/test.yml/badge.svg)](https://github.com/DmitryRendov/aws-sandbox-serverless/actions/workflows/test.yml)
+
 Serverless solution for AWS Sandbox
 
 ## Install (CentOS 8)
