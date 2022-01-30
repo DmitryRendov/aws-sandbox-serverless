@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.8', '3.9']
+        node-version: [14.x]
         # stages:
         #   - stage: 'dev'
         #     AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY_DEV'
@@ -25,9 +26,9 @@ jobs:
         #     AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY_PROD'
         #     AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID_PROD'
     steps:
-      - name: Clone
+      - name: Check-out repo
         uses: actions/checkout@v2
-      - name: Setup
+      - name: Setup conda environment
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
@@ -42,14 +43,26 @@ jobs:
           conda info
           conda list
           make test-lints
-      # - name: Check serverless dev
-      #   uses: serverless/github-action@master
+      - name: Check serverless
+        run: |
+          npm install
+          npx serverless --version
+          npx serverless --help
+        env:
+          SLS_DEBUG: 1
+      # - name: Check serverless dev with Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      # - run: npm install
+      #   env:
+      #     SLS_DEBUG: 1
       #   with:
       #     args: -c "serverless plugin install --name serverless-python-requirements && \
       #               serverless plugin install --name serverless-wsgi && \
       #               serverless plugin install --name dynamodb-local && \
       #               serverless plugin install --name serverless-offline && sls offline start --stage dev"
-      #     entrypoint: /bin/bash
+          # entrypoint: /bin/bash
       #   env:
       #     AWS_ACCESS_KEY_ID: ${{ secrets[matrix.stages.AWS_ACCESS_KEY_ID] }}
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets[matrix.stages.AWS_SECRET_ACCESS_KEY] }}

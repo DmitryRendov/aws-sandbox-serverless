@@ -53,6 +53,12 @@ test-lints:
 	pylint --rcfile=.ci/pylintrc --output-format=parseable src/* 2>&1 | tee $(artefacts_path)/pylint.log || true; \
 	flake8 --config=.ci/flake8rc src/* 2>&1 | tee $(artefacts_path)/flake8.log
 
+test-serverless:
+	$(call print_status_noprc,Checking serverless)
+	eval "$$(conda shell.bash hook)"; \
+	conda activate $(ENVNAME); \
+	npm install
+
 style:
 	$(call print_status_noprc,Styling with black)
 	find src -type f -name "*.py" -print0 | xargs -0r black
