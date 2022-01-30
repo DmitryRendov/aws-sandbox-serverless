@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pass test
+{% endblock %}
+
+{% block body %}
+<div class="container px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Pass test</h1>
+    <!-- Add page where to render form -->
+    <form method="post">
+        <input type="text" name="title" id="title" class="form-control" placeholder="Input name"><br>
+        <textarea name="intro" id="text" class="form-control" placeholder="Input answer"></textarea><br>
+        <textarea name="text" id="text" class="form-control" placeholder="Input comment"></textarea><br>
+        <input type="submit" class="btn btn-success" value="Send">
+    </form>
+</div>
+{% endblock %}

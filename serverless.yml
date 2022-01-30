@@ -6,12 +6,18 @@ variablesResolutionMode: 20210326
 disabledDeprecations:
   - OUTDATED_NODEJS
 
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-dynamodb-local
+  - serverless-offline
+
 provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: '20201221'
-  memorySize: ${self:custom.env.memorySize}
-  timeout: ${self:custom.env.timeout}
+  memorySize: ${self:custom.memorySize}
+  timeout: ${self:custom.timeout}
   stage: ${opt:stage, 'production'}
   region: ${opt:region, 'us-east-1'}
   stackName: ${self:service}-${self:provider.stage}
@@ -22,8 +28,8 @@ provider:
     role: serverless
     repo: aws-sandbox-serverless
     team: developers
-  #profile: ${opt:profile, 'production-dmitry_rendov'}
-  role: ${self:custom.env.sls_role}
+  # profile: ${opt:profile, 'production-dmitry_rendov'}
+  role: ${self:custom.sls_role}
   deploymentBucket:
     name: ${opt:bucket, 'sb-production-serverless-6e9141321b09'}
     serverSideEncryption: AES256
@@ -32,11 +38,11 @@ provider:
   environment:
     REGION: ${self:provider.region}
     SERVICE_NAME: ${self:service}
-    AWS_PROFILE: ${opt:profile, 'production-dmitry_rendov'}
+    # AWS_PROFILE: ${opt:profile, 'sts'}
+    TESTS_TABLE: 'tests-table-${self:provider.stage}'
+    WEB_PATH: 'src/web/app.app'
 
-custom:
-  apiVersion: ${opt:apiVersion, 'v1'}
-  env: ${file(./sls/env/${self:provider.stage}.yml)}
+custom: ${file(./sls/env/${self:provider.stage}.yml)}
 
 package:
   individually: true
@@ -46,11 +52,13 @@ package:
   exclude:
     - .git
     - .gitignore
+    - __pycache__/
     - node_modules
     - README.md
     - LICENSE
     - serverless.yml
     - package-lock.json
+    - src/web/artefacts/
     - sls/*
     - sls/env/*
 

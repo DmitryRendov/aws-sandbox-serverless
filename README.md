@@ -35,3 +35,28 @@ Or, you can deploy all the functions and resources, using the command
 ```
 sls deploy
 ```
+
+## Test locally ##
+
+### Prerequisites
+
+Install and configure [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your local machine.
+> Note: can be downloaded via `make setup` run.
+
+Install the `dev` dependencies and activate `conda` environment with the following command:
+
+```sh
+make environment
+conda activate aws-sandbox-serverless
+```
+
+### Development
+Now you can start `AWS λ`, `API Gateway` and `DynamoDB` local with the following command:
+```sh
+sls offline start --stage dev
+```
+At this point, you can run web application locally with the following command:
+```sh
+sls wsgi serve --stage dev
+```
+Check that web application is up-and-running by the following link: http://localhost:5000/

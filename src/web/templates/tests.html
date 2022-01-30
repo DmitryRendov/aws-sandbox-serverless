@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Test results
+{% endblock %}
+
+{% block body %}
+<div class="container px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Test results</h1>
+    <!-- jinja templating style -->
+    {% if tests|length > 0 %}
+        {% for test in tests %}
+        <div class="alert alert-info">
+            <h2>{{ test.title }}</h2>
+            <p>{{ test.intro }}</p>
+            <p><b>Date: {{ test.date | ctime }}</b></p>
+            <a href="/tests/{{ test.id }}"class="btn btn-warning">Details</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No tests found</p>
+    {% endif %}
+</div>
+{% endblock %}
