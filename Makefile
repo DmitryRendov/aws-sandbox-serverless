@@ -5,7 +5,7 @@ artefacts_path := artefacts
 # Env vars
 CONDA_ENV_FILE = environment.yml
 REQUIREMENTS_FILE = src/web/requirements.txt
-ENVNAME := aws-serverless$(RANDOM_SUFFIX)
+ENVNAME := aws-sandbox-serverless$(RANDOM_SUFFIX)
 
 
 define print_status_noprc
@@ -48,8 +48,16 @@ get-requirements:
 
 test-lints:
 	$(call print_status_noprc,Linting Python code with pylint/flake8)
-	@pylint --rcfile=.ci/pylintrc --output-format=parseable src/* 2>&1 | tee $(artefacts_path)/pylint.log || true; \
+	eval "$$(conda shell.bash hook)"; \
+	conda activate $(ENVNAME); \
+	pylint --rcfile=.ci/pylintrc --output-format=parseable src/* 2>&1 | tee $(artefacts_path)/pylint.log || true; \
 	flake8 --config=.ci/flake8rc src/* 2>&1 | tee $(artefacts_path)/flake8.log
+
+test-serverless:
+	$(call print_status_noprc,Checking serverless)
+	eval "$$(conda shell.bash hook)"; \
+	conda activate $(ENVNAME); \
+	npm install
 
 style:
 	$(call print_status_noprc,Styling with black)
