@@ -1,7 +1,6 @@
 service: aws-sandbox-serverless
 
 useDotenv: true
-variablesResolutionMode: 20210326
 
 disabledDeprecations:
   - OUTDATED_NODEJS
@@ -11,11 +10,9 @@ plugins:
   - serverless-wsgi
   - serverless-dynamodb-local
   - serverless-offline
-
 provider:
   name: aws
-  runtime: python3.8
-  lambdaHashingVersion: '20201221'
+  runtime: python3.9
   memorySize: ${self:custom.memorySize}
   timeout: ${self:custom.timeout}
   stage: ${opt:stage, 'production'}
@@ -29,7 +26,8 @@ provider:
     repo: aws-sandbox-serverless
     team: developers
   # profile: ${opt:profile, 'production-dmitry_rendov'}
-  role: ${self:custom.sls_role}
+  iam:
+    role: ${self:custom.sls_role}
   deploymentBucket:
     name: ${opt:bucket, 'sb-production-serverless-6e9141321b09'}
     serverSideEncryption: AES256
@@ -48,19 +46,16 @@ package:
   individually: true
   excludeDevDependencies: true
   patterns:
-    - src/**
-  exclude:
-    - .git
-    - .gitignore
-    - __pycache__/
-    - node_modules
-    - README.md
-    - LICENSE
-    - serverless.yml
-    - package-lock.json
-    - src/web/artefacts/
-    - sls/*
-    - sls/env/*
+    - 'src/**'
+    - '!__pycache__/'
+    - '!node_modules'
+    - '!README.md'
+    - '!LICENSE'
+    - '!serverless.yml'
+    - '!package-lock.json'
+    - '!src/web/artefacts/'
+    - '!sls/*'
+    - '!sls/env/*'
 
 resources:
   - ${file(./sls/resources.yml)}
