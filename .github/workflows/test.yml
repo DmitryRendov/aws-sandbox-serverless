@@ -1,0 +1,56 @@
+name: Test pipeline
+
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+        # stages:
+        #   - stage: 'dev'
+        #     AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY_DEV'
+        #     AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID_DEV'
+        #   - stage: 'prod'
+        #     AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY_PROD'
+        #     AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID_PROD'
+    steps:
+      - name: Clone
+        uses: actions/checkout@v2
+      - name: Setup
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          activate-environment: aws-sandbox-serverless
+          channel-priority: strict
+          environment-file: .ci/environment.yml
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+          auto-activate-base: false
+      - name: Check code
+        run: |
+          conda info
+          conda list
+          make test-lints
+      # - name: Check serverless dev
+      #   uses: serverless/github-action@master
+      #   with:
+      #     args: -c "serverless plugin install --name serverless-python-requirements && \
+      #               serverless plugin install --name serverless-wsgi && \
+      #               serverless plugin install --name dynamodb-local && \
+      #               serverless plugin install --name serverless-offline && sls offline start --stage dev"
+      #     entrypoint: /bin/bash
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets[matrix.stages.AWS_ACCESS_KEY_ID] }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets[matrix.stages.AWS_SECRET_ACCESS_KEY] }}
+      #     SLS_DEBUG: 1
