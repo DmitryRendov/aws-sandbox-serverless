@@ -17,12 +17,19 @@ from flask import (  # noqa: F401,
     request,
     url_for,
 )
+from flask_s3 import FlaskS3
+
 
 app = Flask(__name__)
+# s3 options
+# app.config["FLASKS3_BUCKET_NAME"] = "cloudology.by"
+# s3 = FlaskS3(app)
+# dynamodb config
 ddb_client = resource("dynamodb")
 if environ.get("IS_OFFLINE"):
     dev = session.Session(profile_name="sts", region_name="localhost")
     ddb_client = dev.resource("dynamodb", endpoint_url="http://localhost:8000")
+
 TESTS_TABLE = ddb_client.Table(environ.get("TESTS_TABLE"))
 
 
